@@ -141,24 +141,23 @@ Exceptions are thrown in the service and repository layers and handled in the co
 
 Below are screenshots demonstrating the functionality and structure of the project:
 
-1. **Project Structure (IntelliJ IDEA)**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/01_project_structure.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/01_project_structure.png)
+Project Structure (IntelliJ IDEA)
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/01_project_structure.png
 
-2. **Database Schema (schema.sql)**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/02_schema_sql.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/02_schema_sql.png)
+Database Schema (schema.sql)
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/02_schema_sql.png
 
-3. **PostgreSQL Tables (pgAdmin)**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/03_pgadmin_tables.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/03_pgadmin_tables.png)
+PostgreSQL Tables (pgAdmin)
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/03_pgadmin_tables.png
 
-4. **PostgreSQL Data View (books table)**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/04_pgadmin_data.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/04_pgadmin_data.png)
+PostgreSQL Data View (books table)
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/04_pgadmin_data.png
 
-5. **Console Output – CREATE & READ Operations**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/05_console_create_read.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/05_console_create_read.png)
+Console Output – CREATE & READ Operations
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/05_console_create_read.png
 
-6. **Polymorphism Demonstration (BaseEntity → EBook)**
-   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/06_polymorphism.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/07_polymorphism.png)
-
+Polymorphism Demonstration (BaseEntity → EBook / PrintedBook)
+https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/06_polymorphism.png
 
 These screenshots confirm correct implementation of:
 
