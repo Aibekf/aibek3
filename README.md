@@ -139,25 +139,24 @@ Exceptions are thrown in the service and repository layers and handled in the co
 
 ## 📸 Screenshots
 
-Below are screenshots demonstrating the functionality and structure of the project:
+### Project Structure
+![Project Structure](docs/screenshots/01_project_structure.png)
 
-Project Structure (IntelliJ IDEA)
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/01_project_structure.png
+### Database Schema
+![Schema SQL](docs/screenshots/02_schema_sql.png)
 
-Database Schema (schema.sql)
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/02_schema_sql.png
+### PostgreSQL Tables
+![pgAdmin Tables](docs/screenshots/03_pgadmin_tables.png)
 
-PostgreSQL Tables (pgAdmin)
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/03_pgadmin_tables.png
+### PostgreSQL Data
+![pgAdmin Data](docs/screenshots/04_pgadmin_data.png)
 
-PostgreSQL Data View (books table)
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/04_pgadmin_data.png
+### CRUD Operations (Console Output)
+![CRUD](docs/screenshots/05_console_create_read.png)
 
-Console Output – CREATE & READ Operations
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/05_console_create_read.png
+### Polymorphism Demonstration
+![Polymorphism](docs/screenshots/06_polymorphism.png)
 
-Polymorphism Demonstration (BaseEntity → EBook / PrintedBook)
-https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/06_polymorphism.png
 
 These screenshots confirm correct implementation of:
 
