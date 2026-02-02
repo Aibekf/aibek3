@@ -1,19 +1,20 @@
-DROP TABLE IF EXISTS books;
-DROP TABLE IF EXISTS authors;
-
 CREATE TABLE authors (
                          id SERIAL PRIMARY KEY,
-                         name VARCHAR(255) NOT NULL
+                         name VARCHAR(100)
 );
 
 CREATE TABLE books (
                        id SERIAL PRIMARY KEY,
-                       name VARCHAR(255) NOT NULL,
-                       price DOUBLE PRECISION CHECK (price > 0),
-                       author_id INTEGER NOT NULL,
-                       CONSTRAINT fk_author FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
+                       name VARCHAR(150),
+                       price DOUBLE PRECISION,
+                       author_id INT,
+                       FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
-INSERT INTO authors (name) VALUES ('George Orwell'), ('J.K. Rowling');
-INSERT INTO books (name, price, author_id) VALUES ('1984', 15.99, 1);
-INSERT INTO books (name, price, author_id) VALUES ('Harry Potter', 25.50, 2);
+INSERT INTO authors (name) VALUES ('George Orwell');
+
+INSERT INTO books (name, price, author_id)
+VALUES ('1984', 15.99, 1);
+
+INSERT INTO books (name, price, author_id)
+VALUES ('Animal Farm', 20.50, 1);

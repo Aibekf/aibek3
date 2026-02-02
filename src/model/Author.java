@@ -1,21 +1,19 @@
 package model;
 
-public class Author {
-
-    private int id;
-    private String name;
+public class Author extends BaseEntity {
 
     public Author(int id, String name) {
-        this.id = id;
-        this.name = name;
+        super(id, name);
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String getType() {
+        return "AUTHOR";
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public double calculateValue() {
+        return 0;
     }
 }
 

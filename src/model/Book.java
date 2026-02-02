@@ -1,9 +1,9 @@
 package model;
 
-import interfaces.Validatable;
 import interfaces.PricedItem;
+import interfaces.Validatable;
 
-public class Book extends BaseEntity implements Validatable, PricedItem {
+public class Book extends BaseEntity implements Validatable<Book>, PricedItem {
 
     protected double price;
     protected Author author;
@@ -14,28 +14,12 @@ public class Book extends BaseEntity implements Validatable, PricedItem {
         this.author = author;
     }
 
-
-    public Author getAuthor() {
-        return author;
-    }
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     @Override
-    public void validate() {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Book name is empty");
-        }
-        if (price <= 0) {
-            throw new IllegalArgumentException("Invalid price");
-        }
-        if (author == null) {
-            throw new IllegalArgumentException("Author cannot be null");
+    public void validate(Book b) {
+        Validatable.notBlank(b.name);
+        Validatable.positive(b.price);
+        if (b.author == null || b.author.getId() <= 0) {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -44,10 +28,17 @@ public class Book extends BaseEntity implements Validatable, PricedItem {
         return "BOOK";
     }
 
-
     @Override
     public double calculateValue() {
         return price;
     }
-}
 
+    @Override
+    public double getPrice() {
+        return price;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+}

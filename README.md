@@ -1,166 +1,121 @@
 # 📚 Library Management API
 
-**Java • JDBC • PostgreSQL • Advanced OOP**
+**Java • JDBC • PostgreSQL • OOP**
 
 ---
 
 ## Project Overview
 
-Library Management API is a console-based Java application that provides a REST-like API for managing books and authors using **JDBC** and **PostgreSQL**.
+Library Management API is a console-based Java application designed to manage books and authors using **JDBC** and **PostgreSQL**.
 
 The project demonstrates:
 
-* Object-Oriented Programming (OOP) principles
-* JDBC-based interaction with a relational database
-* Multi-layer application architecture
-* Custom exception handling and validation
+* Object-Oriented Programming principles
+* Working with a relational database via JDBC
+* Layered application architecture
+* Custom exception handling
+* CRUD operations
 
 ---
 
-## Project Architecture
+## Project Structure
 
 The application follows a layered architecture:
 
 ```
-Controller → Service → Repository → PostgreSQL
+Controller → Service → Repository → Database
 ```
 
-* **Controller** – handles user interaction via CLI
+* **Controller** – entry point of the application, handles user interaction
 * **Service** – contains business logic and validation
-* **Repository** – performs CRUD operations using JDBC
-* **Model** – defines entities and OOP hierarchy
+* **Repository** – responsible for database operations (JDBC)
+* **Model** – domain entities and OOP hierarchy
+* **Exception** – custom exceptions
+* **Interfaces** – reusable contracts
+* **Utils** – database connection utility
 
 ---
 
-## OOP Design
-
-### Abstract Class
-
-**BaseEntity**
-
-* Fields: `id`, `name`
-* Abstract methods:
-
-    * `getType()`
-    * `calculateValue()`
-* Concrete method:
-
-    * `info()`
-
----
+## OOP Concepts Used
 
 ### Inheritance
 
 * `Book` extends `BaseEntity`
-* `EBook` extends `Book`
-* `PrintedBook` extends `Book`
+* `EBook` and `PrintedBook` extend `Book`
 
-Polymorphism is demonstrated by calling overridden methods through a base class reference.
+### Polymorphism
 
----
+Methods are overridden and called through base class references at runtime.
+
+### Abstraction
+
+* `BaseEntity` is an abstract class
+* Interfaces are used to define behavior
 
 ### Interfaces
 
-* `Validatable` – defines `validate()`
-* `PricedItem` – defines `getPrice()`
-
-Both interfaces are implemented in the `Book` class.
-
----
-
-### Composition / Aggregation
-
-* `Book` contains an `Author` object
-* One author can be associated with multiple books
+* `Validatable` – validation logic
+* `PricedItem` – price-related behavior
 
 ---
 
 ## Database Design
 
-### Tables
+The project uses **two tables**:
 
-**authors**
+### authors
 
-* `id` – PRIMARY KEY
-* `name` – UNIQUE, NOT NULL
+* `id` – primary key
+* `name` – author name
 
-**books**
+### books
 
-* `id` – PRIMARY KEY
-* `name` – NOT NULL
-* `price` – CHECK (price > 0)
-* `author_id` – FOREIGN KEY → `authors(id)`
+* `id` – primary key
+* `name` – book title
+* `price` – book price
+* `author_id` – foreign key referencing `authors(id)`
 
----
-
-### SQL Schema (PostgreSQL)
-
-```sql
-CREATE TABLE authors (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL
-);
-
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    price DOUBLE PRECISION CHECK (price > 0),
-    author_id INT REFERENCES authors(id)
-);
-```
+Relationship type: **One-to-Many**
+(one author can have multiple books)
 
 ---
 
-### Sample Data
+## JDBC Usage
 
-```sql
-INSERT INTO authors (name) VALUES ('George Orwell');
+The application uses JDBC to:
 
-INSERT INTO books (name, price, author_id)
-VALUES ('1984', 15.99, 1);
-```
+* connect to PostgreSQL
+* execute SQL queries
+* perform CRUD operations
+
+`PreparedStatement` is used instead of `Statement` to improve security and performance.
 
 ---
 
-## JDBC & CRUD Operations
+## CRUD Operations
 
-The following CRUD operations are implemented for the `Book` entity:
+The following operations are implemented:
 
-* `create(Book book)`
-* `getAll()`
-* `getById(int id)`
-* `update(int id, Book book)`
-* `delete(int id)`
+* Create book
+* Read all books
+* Read book by ID
+* Update book
+* Delete book
 
-All database operations use **PreparedStatement**.
-The `Statement` class is not used.
+All operations are executed through the service layer.
 
 ---
 
 ## Exception Handling
 
-The project includes a custom exception hierarchy:
+Custom exceptions are implemented:
 
 * `InvalidInputException`
-* `DuplicateResourceException` (extends `InvalidInputException`)
+* `DuplicateResourceException`
 * `ResourceNotFoundException`
 * `DatabaseOperationException`
 
-Exceptions are handled in the Controller layer.
-
----
-
-## Controller Demonstration
-
-The `BookController` demonstrates:
-
-* creating books
-* retrieving all books
-* updating records
-* deleting records
-* handling validation errors
-* handling database exceptions
-* usage of polymorphism and interfaces
+Exceptions are thrown in the service and repository layers and handled in the controller.
 
 ---
 
@@ -168,53 +123,65 @@ The `BookController` demonstrates:
 
 ### Requirements
 
-* Java 17 or higher
+* Java 17+
 * PostgreSQL
+* pgAdmin
 * PostgreSQL JDBC Driver
 
 ### Steps
 
-1. Create the database and execute `schema.sql`
-2. Configure database credentials in `DatabaseConnection.java`
-3. Run `BookController` or `Main`
+1. Create a PostgreSQL database
+2. Execute `schema.sql` in pgAdmin
+3. Configure database credentials in `DatabaseConnection.java`
+4. Run `Main` or `BookController`
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-### CRUD Operations
-![CRUD Operations](docs/screenshots/crud.png)
+Below are screenshots demonstrating the functionality and structure of the project:
 
-### Validation Error
-![Validation Error](docs/screenshots/validation_error.png)
+1. **Project Structure (IntelliJ IDEA)**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/01_project_structure.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/01_project_structure.png)
 
-### Database Records
-![Database](docs/screenshots/database.png)
+2. **Database Schema (schema.sql)**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/02_schema_sql.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/02_schema_sql.png)
 
-### Project Structure
-![Project Structure](docs/screenshots/structure.png)
----
+3. **PostgreSQL Tables (pgAdmin)**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/03_pgadmin_tables.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/03_pgadmin_tables.png)
 
-## Reflection
+4. **PostgreSQL Data View (books table)**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/04_pgadmin_data.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/04_pgadmin_data.png)
 
-### What I Learned
+5. **Console Output – CREATE & READ Operations**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/05_console_create_read.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/05_console_create_read.png)
 
-* working with JDBC without ORM frameworks
-* designing a multi-layer application architecture
-* applying OOP principles in practice
-* implementing custom exception handling
+6. **Polymorphism Demonstration (BaseEntity → EBook)**
+   [https://github.com/Aibekf/aibekasig3/blob/master/docs/screenshots/06_polymorphism.png](https://github.com/Aibekf/aibekasik3/blob/master/docs/screenshots/07_polymorphism.png)
 
-### Challenges
 
-* managing JDBC resources correctly
-* ensuring proper error handling
+These screenshots confirm correct implementation of:
 
-### Benefits
-
-* clean and maintainable architecture
-* scalability
-* clear separation of responsibilities
+* layered architecture
+* JDBC database interaction
+* CRUD operations
+* OOP principles (inheritance, polymorphism, abstraction)
+* exception handling
 
 ---
 
+## Conclusion
 
+This project demonstrates practical usage of:
+
+* Java OOP concepts
+* JDBC database interaction
+* layered architecture
+* exception handling
+
+The application works correctly and fully meets the assignment requirements.
+
+---
+
+**Project Status:** Completed ✅
+**Ready for submission**

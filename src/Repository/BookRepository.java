@@ -1,141 +1,117 @@
 package Repository;
 
-import model.Book;
-import model.Author;
-import utils.DatabaseConnection;
 import exception.DatabaseOperationException;
 import exception.ResourceNotFoundException;
+import model.Author;
+import model.Book;
+import Repository.interfaces.CrudRepository;
+import utils.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRepository {
+public class BookRepository implements CrudRepository<Book> {
 
+    @Override
     public void create(Book book) {
-        String sql = "INSERT INTO books(name, price, author_id) VALUES (?, ?, ?)";
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "INSERT INTO books(name,price,author_id) VALUES (?,?,?)")) {
             ps.setString(1, book.getName());
             ps.setDouble(2, book.getPrice());
-            Author author = book.getAuthor();
-            if (author == null) {
-                throw new IllegalArgumentException("Author cannot be null");
-            }
-            ps.setInt(3, author.getId());
+            ps.setInt(3, book.getAuthor().getId());
             ps.executeUpdate();
-
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Error creating book", e);
+            throw new DatabaseOperationException("", e);
         }
     }
 
+    @Override
     public List<Book> getAll() {
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT b.id, b.name, b.price, a.id AS author_id, a.name AS author_name " +
-                "FROM books b LEFT JOIN authors a ON b.author_id = a.id";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
+        List<Book> list = new ArrayList<>();
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT b.id,b.name,b.price,a.id,a.name FROM books b JOIN authors a ON b.author_id=a.id");
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
-                Author author = null;
-                int authorId = rs.getInt("author_id");
-                String authorName = rs.getString("author_name");
-                if (authorName != null) {
-                    author = new Author(authorId, authorName);
-                }
-                books.add(new Book(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getDouble("price"),
-                        author
+                list.add(new Book(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        new Author(rs.getInt(4), rs.getString(5))
                 ));
             }
-
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Error fetching books", e);
+            throw new DatabaseOperationException("", e);
         }
-
-        return books;
+        return list;
     }
 
+    @Override
     public Book getById(int id) {
-        String sql = "SELECT b.id, b.name, b.price, a.id AS author_id, a.name AS author_name " +
-                "FROM books b LEFT JOIN authors a ON b.author_id = a.id WHERE b.id = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT b.id,b.name,b.price,a.id,a.name FROM books b JOIN authors a ON b.author_id=a.id WHERE b.id=?")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
-            if (!rs.next()) {
-                throw new ResourceNotFoundException("Book not found");
-            }
-
-            Author author = null;
-            int authorId = rs.getInt("author_id");
-            String authorName = rs.getString("author_name");
-            if (authorName != null) {
-                author = new Author(authorId, authorName);
-            }
-
+            if (!rs.next()) throw new ResourceNotFoundException("");
             return new Book(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getDouble("price"),
-                    author
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getDouble(3),
+                    new Author(rs.getInt(4), rs.getString(5))
             );
-
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Error fetching book", e);
+            throw new DatabaseOperationException("", e);
         }
     }
 
+    @Override
     public void update(int id, Book book) {
-        String sql = "UPDATE books SET name = ?, price = ?, author_id = ? WHERE id = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "UPDATE books SET name=?,price=?,author_id=? WHERE id=?")) {
             ps.setString(1, book.getName());
             ps.setDouble(2, book.getPrice());
-            Author author = book.getAuthor();
-            if (author == null) {
-                throw new IllegalArgumentException("Author cannot be null");
-            }
-            ps.setInt(3, author.getId());
+            ps.setInt(3, book.getAuthor().getId());
             ps.setInt(4, id);
-
-            if (ps.executeUpdate() == 0) {
-                throw new ResourceNotFoundException("Book not found");
-            }
-
+            if (ps.executeUpdate() == 0) throw new ResourceNotFoundException("");
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Error updating book", e);
+            throw new DatabaseOperationException("", e);
         }
     }
 
+    @Override
     public void delete(int id) {
-        String sql = "DELETE FROM books WHERE id = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement("DELETE FROM books WHERE id=?")) {
             ps.setInt(1, id);
-
-            if (ps.executeUpdate() == 0) {
-                throw new ResourceNotFoundException("Book not found");
-            }
-
+            if (ps.executeUpdate() == 0) throw new ResourceNotFoundException("");
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Error deleting book", e);
+            throw new DatabaseOperationException("", e);
         }
+    }
+
+    public List<Book> findByAuthor(String name) {
+        List<Book> list = new ArrayList<>();
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT b.id,b.name,b.price,a.id,a.name FROM books b JOIN authors a ON b.author_id=a.id WHERE a.name=?")) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Book(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        new Author(rs.getInt(4), rs.getString(5))
+                ));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("", e);
+        }
+        return list;
     }
 }
+

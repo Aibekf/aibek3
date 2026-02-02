@@ -2,7 +2,7 @@ package model;
 
 public class EBook extends Book {
 
-    private String format;
+    private final String format;
 
     public EBook(int id, String name, double price, Author author, String format) {
         super(id, name, price, author);
@@ -12,9 +12,5 @@ public class EBook extends Book {
     @Override
     public String getType() {
         return "EBOOK";
-    }
-
-    public String getFormat() {
-        return format;
     }
 }

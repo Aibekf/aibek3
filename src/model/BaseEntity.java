@@ -1,10 +1,11 @@
 package model;
 
 public abstract class BaseEntity {
+
     protected int id;
     protected String name;
 
-    public BaseEntity(int id, String name) {
+    protected BaseEntity(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -13,7 +14,7 @@ public abstract class BaseEntity {
     public abstract double calculateValue();
 
     public String info() {
-        return id + " - " + name;
+        return id + " " + name;
     }
 
     public int getId() { return id; }
