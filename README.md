@@ -165,6 +165,87 @@ These screenshots confirm correct implementation of:
 * CRUD operations
 * OOP principles (inheritance, polymorphism, abstraction)
 * exception handling
+---
+## UML Diagram
+
+```mermaid
+classDiagram
+  class Validatable {
+    <<interface>>
+    +validate()
+  }
+  class PricedItem {
+    <<interface>>
+    +getPrice()
+  }
+
+  class BaseEntity {
+    <<abstract>>
+    #int id
+    #String name
+    +getType()
+    +calculateValue()
+    +info()
+  }
+
+  class Author {
+    -int id
+    -String name
+    +getId()
+    +getName()
+  }
+
+  class Book {
+    #double price
+    #Author author
+    +validate()
+    +getType()
+    +calculateValue()
+    +getPrice()
+    +getAuthor()
+  }
+
+  class EBook {
+    -String format
+    +getType()
+  }
+
+  class PrintedBook {
+    -int pages
+    +getType()
+  }
+
+  class BookRepository {
+    +create()
+    +getAll()
+    +getById()
+    +update()
+    +delete()
+    +findByAuthor()
+  }
+
+  class BookService {
+    +create()
+    +getAll()
+    +getById()
+    +update()
+    +delete()
+    +getBooksByAuthor()
+  }
+
+  class BookController {
+    +main()
+  }
+
+  Book ..|> Validatable
+  Book ..|> PricedItem
+  Book --|> BaseEntity
+  EBook --|> Book
+  PrintedBook --|> Book
+  Book *-- Author
+  BookService --> BookRepository
+  BookController --> BookService
+```
 
 ---
 
@@ -181,5 +262,4 @@ The application works correctly and fully meets the assignment requirements.
 
 ---
 
-**Project Status:** Completed ✅
-**Ready for submission**
+
